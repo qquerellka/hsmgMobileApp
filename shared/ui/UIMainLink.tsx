@@ -1,8 +1,8 @@
 // ui/UIMainLink.tsx
-import { ReactNode } from "react";
-import { Pressable, View, StyleSheet, PressableProps } from "react-native";
+import { UIText } from "@/shared/ui/UIText";
 import { Link, type Href } from "expo-router";
-import { UIText } from "@/ui/UIText";
+import { ReactNode } from "react";
+import { Pressable, PressableProps, StyleSheet, View } from "react-native";
 
 type Props = {
   href: Href;                 // куда навигировать

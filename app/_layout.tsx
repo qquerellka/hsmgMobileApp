@@ -1,123 +1,81 @@
 // app/_layout.tsx
-import 'react-native-reanimated';
-import { Slot } from "expo-router";
-import { View, Image, StatusBar, Pressable, StyleSheet } from "react-native";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import * as SplashScreen from "expo-splash-screen";
-import {
-  useFonts,
-  Montserrat_400Regular,
-  Montserrat_500Medium,
-  Montserrat_600SemiBold,
-  Montserrat_700Bold,
-} from "@expo-google-fonts/montserrat";
-import { useEffect } from "react";
+import "react-native-reanimated";
+import React, { useEffect } from "react";
+import { Slot, useRouter, useSegments } from "expo-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ActivityIndicator, StatusBar, View } from "react-native";
 
-SplashScreen.preventAutoHideAsync();
+import { useAuthBootstrap } from "@features/auth/hooks/useAuthBootstrap";
+import { theme } from "@shared/config/theme";
 
-const HEADER_BAR_HEIGHT = 70;
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
-    Montserrat_400Regular,
-    Montserrat_500Medium,
-    Montserrat_600SemiBold,
-    Montserrat_700Bold,
-  });
-
-  useEffect(() => {
-    if (fontsLoaded) SplashScreen.hideAsync();
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) return null;
-
   return (
     <SafeAreaProvider>
-      <LayoutWithHeader />
+      <QueryClientProvider client={queryClient}>
+        <AuthGateWrapper />
+      </QueryClientProvider>
     </SafeAreaProvider>
   );
 }
 
-function LayoutWithHeader() {
-  const insets = useSafeAreaInsets();
-  const headerTotalHeight = insets.top + HEADER_BAR_HEIGHT;
+function AuthGateWrapper() {
+  const segments = useSegments();
+  const router = useRouter();
+
+  const { isReady, isAuthChecking, accessToken } = useAuthBootstrap();
+
+   useEffect(() => {
+    if (!isReady || isAuthChecking) return;
+
+    const [root, sub] = segments;
+    const inAuthGroup = root === '(auth)';
+    const inAppGroup = root === '(app)';
+    const isHome = !root; // "/" => true
+
+    // ❌ неавторизован
+    if (!accessToken) {
+      // запрещаем ходить в (app) без авторизации
+      if (inAppGroup) {
+        router.replace('/');
+      }
+      return;
+    }
+
+    // ✅ авторизован
+    const onProfile = inAppGroup && sub === 'profile'; // см. пункт ниже про путь
+
+    // если сидим на home или в (auth) — кидаем в профиль
+    if ((isHome || inAuthGroup) && !onProfile) {
+      router.replace('/profile');
+    }
+  }, [isReady, isAuthChecking, accessToken, segments, router]);
+  
+  if (!isReady || isAuthChecking) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: theme.palette.totalBlack,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <StatusBar barStyle="light-content" />
+        <ActivityIndicator size="large" color={theme.palette.white} />
+      </View>
+    );
+  }
 
   return (
-    <View style={styles.root}>
-      <StatusBar barStyle="light-content" />
-      <View
-        style={[
-          styles.headerWrap,
-          { paddingTop: insets.top, height: headerTotalHeight },
-        ]}
-      >
-        <Header />
-      </View>
-
-      <View style={{ flex: 1, paddingTop: headerTotalHeight }}>
-        <Slot />
-      </View>
-    </View>
+    <>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={theme.palette.totalBlack}
+      />
+      <Slot />
+    </>
   );
 }
-
-export const Header = () => {
-  return (
-    <View style={styles.headerInner}>
-      <Image
-        source={require("../assets/hsmgLogo.png")}
-        resizeMode="contain"
-        style={{ width: 121, height: 28 }}
-      />
-
-      <View style={styles.actions}>
-        <Pressable hitSlop={10} onPress={() => {}}>
-          <Image
-            source={require("../assets/icons/navProfileIcon.png")}
-            style={{ width: 44, height: 44, tintColor: "#fff" }}
-            resizeMode="contain"
-          />
-        </Pressable>
-        <Pressable hitSlop={10} onPress={() => {}}>
-          <Image
-            source={require("../assets/icons/navBurgerIcon.png")}
-            style={{ width: 44, height: 44, tintColor: "#fff" }}
-            resizeMode="contain"
-          />
-        </Pressable>
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: "#fff",
-    // paddingHorizontal: 16,
-  },
-
-  headerWrap: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    backgroundColor: "#000",
-  },
-
-  headerInner: {
-    height: HEADER_BAR_HEIGHT,
-    paddingHorizontal: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
-  actions: {
-    flexDirection: "row",
-    gap: 16,
-  },
-});
