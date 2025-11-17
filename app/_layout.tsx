@@ -1,9 +1,11 @@
+// app/_layout.tsx
 import "react-native-reanimated";
 import React, { useEffect } from "react";
 import { Slot, useRouter, useSegments } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ActivityIndicator, StatusBar, View } from "react-native";
+import { useFonts } from "expo-font";
 
 import { useAuthBootstrap } from "@features/auth/hooks/useAuthBootstrap";
 import { theme } from "@shared/config/theme";
@@ -18,6 +20,29 @@ const queryClient = new QueryClient({
 });
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    "Montserrat-Regular": require("../assets/fonts/Montserrat-Regular.ttf"),
+    "Montserrat-Medium": require("../assets/fonts/Montserrat-Medium.ttf"),
+    "Montserrat-SemiBold": require("../assets/fonts/Montserrat-SemiBold.ttf"),
+    "Montserrat-Bold": require("../assets/fonts/Montserrat-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: theme.palette.totalBlack,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <StatusBar barStyle="light-content" />
+        <ActivityIndicator size="large" color={theme.palette.white} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
@@ -31,12 +56,7 @@ function AuthGate() {
   const segments = useSegments();
   const router = useRouter();
 
-  const {
-    isReady,
-    isAuthChecking,
-    accessToken,
-    status,
-  } = useAuthBootstrap();
+  const { isReady, isAuthChecking, accessToken, status } = useAuthBootstrap();
 
   useEffect(() => {
     if (!isReady || isAuthChecking) return;
