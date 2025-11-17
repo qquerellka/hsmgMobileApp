@@ -1,9 +1,8 @@
-// shared/api/client.ts
 import axios from 'axios';
 import { useAuthStore } from '@features/auth/model/useAuthStore';
 
 export const api = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL, // <-- только из env
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
 });
 
 api.interceptors.request.use((config) => {

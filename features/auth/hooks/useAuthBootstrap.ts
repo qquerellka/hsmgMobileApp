@@ -3,8 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query';
 
 import { useAuthStore, type AuthUser } from '../model/useAuthStore';
-import { ACCESS_TOKEN_KEY } from './useLogin';
+import { STORAGE_KEYS } from '@/shared/config/hz';
 import { getAuthorizedUser } from '../api/authApi';
+import { clearAuth } from '../lib/tokenStorage';
 
 export const useAuthBootstrap = () => {
   const [isReady, setIsReady] = useState(false);
@@ -18,7 +19,7 @@ export const useAuthBootstrap = () => {
   useEffect(() => {
     const restoreToken = async () => {
       try {
-        const token = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
+        const token = await AsyncStorage.getItem(STORAGE_KEYS.accessToken);
 
         if (token) {
           setAccessToken(token);
@@ -38,7 +39,7 @@ export const useAuthBootstrap = () => {
 
   // 2. если токен есть — валидируем его и получаем юзера
   const { data, error, isLoading } = useQuery<AuthUser, Error>({
-    queryKey: ['authorized-user'],
+    queryKey: ['authorized-user', accessToken],
     queryFn: getAuthorizedUser,
     enabled: !!accessToken,
     retry: false,
@@ -52,15 +53,15 @@ export const useAuthBootstrap = () => {
     setStatus('authenticated');
   }, [data, accessToken, setUser, setStatus]);
 
+  // 3. если /me упал — считаем токен протухшим и чистим авторизацию
   useEffect(() => {
     if (!accessToken) return;
     if (!error) return;
 
-    setAccessToken(null);
-    setUser(null);
-    setStatus('unauthenticated');
-    AsyncStorage.removeItem(ACCESS_TOKEN_KEY).catch(() => {});
-  }, [error, accessToken, setAccessToken, setUser, setStatus]);
+    clearAuth().catch(() => {
+      // можно залогировать, если захочешь
+    });
+  }, [error, accessToken]);
 
   const status = useAuthStore((s) => s.status);
   const isAuthChecking = status === 'checking' || (!!accessToken && isLoading);

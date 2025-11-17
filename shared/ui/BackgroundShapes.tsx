@@ -15,7 +15,6 @@ export const BackgroundShapes = () => {
 
   return (
     <View pointerEvents="none" style={StyleSheet.absoluteFillObject}>
-      {/* 1 — Man */}
       <Man
         width={88}
         height={88}
@@ -29,7 +28,6 @@ export const BackgroundShapes = () => {
         ]}
       />
 
-      {/* 2 — Metal */}
       <Metal
         width={80}
         height={80}
@@ -43,7 +41,6 @@ export const BackgroundShapes = () => {
         ]}
       />
 
-      {/* 3 — Muscle */}
       <Muscle
         width={196}
         height={196}
@@ -57,7 +54,6 @@ export const BackgroundShapes = () => {
         ]}
       />
 
-      {/* 4 — Lightning */}
       <Lightning
         width={117}
         height={117}
@@ -72,7 +68,6 @@ export const BackgroundShapes = () => {
         ]}
       />
 
-      {/* 5 — Cup */}
       <Cup
         width={90}
         height={90}
@@ -87,7 +82,6 @@ export const BackgroundShapes = () => {
         ]}
       />
 
-      {/* 6 — Up */}
       <Up
         width={155}
         height={155}

@@ -1,11 +1,10 @@
-// widgets/menu/MenuOverlay.tsx
 import React from "react";
 import {
   Animated,
   Pressable,
   StyleSheet,
   View,
-  Linking, // 👈 добавили
+  Linking,
 } from "react-native";
 
 import { theme } from "@shared/config/theme";
@@ -13,16 +12,14 @@ import { UIText } from "@/shared/ui/UIText";
 import { HEADER_BAR_HEIGHT } from "@/widgets/header/Header";
 import { UIIcon } from "@/shared/ui/UIIcon";
 
-type MenuOverlayProps = {
+interface MenuOverlayProps {
   onClose: () => void;
 };
 
-// Шторка-меню: чёрный фон + ссылки + плавная анимация
 export const MenuOverlay: React.FC<MenuOverlayProps> = ({ onClose }) => {
   const opacity = React.useRef(new Animated.Value(0)).current;
   const translateY = React.useRef(new Animated.Value(-20)).current;
 
-  // анимация появления
   React.useEffect(() => {
     Animated.parallel([
       Animated.timing(opacity, {

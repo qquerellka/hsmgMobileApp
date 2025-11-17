@@ -1,4 +1,3 @@
-// ui/UIMainLink.tsx
 import { ReactNode } from "react";
 import { Pressable, View, StyleSheet, PressableProps } from "react-native";
 import { Link, type Href } from "expo-router";

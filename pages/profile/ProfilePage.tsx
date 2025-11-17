@@ -1,44 +1,30 @@
-// pages/profile/ProfilePage.tsx
-import React from 'react';
-import { View, StyleSheet, Button, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from "react";
+import { View, StyleSheet, Button } from "react-native";
+import { useRouter } from "expo-router";
 
-import { UIText } from '@shared/ui/UIText';
-import { theme } from '@shared/config/theme';
-import { useAuthStore } from '@features/auth/model/useAuthStore';
-import { ACCESS_TOKEN_KEY } from '@features/auth/hooks/useLogin';
+import { UIText } from "@shared/ui/UIText";
+import { theme } from "@shared/config/theme";
+import { useAuthStore } from "@features/auth/model/useAuthStore";
+import { clearAuth } from "@/features/auth/lib/tokenStorage";
 
 export const ProfilePage = () => {
   const router = useRouter();
 
   const user = useAuthStore((s) => s.user);
-  const logoutStore = useAuthStore((s) => s.logout);
 
   const displayName =
     user?.nickname ||
-    [user?.name, user?.surname].filter(Boolean).join(' ') ||
+    [user?.name, user?.surname].filter(Boolean).join(" ") ||
     user?.email;
 
   const handleLogout = async () => {
-    try {
-      // 1. чистим стор авторизации
-      logoutStore();
-
-      // 2. убираем токен из AsyncStorage
-      await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
-
-      // 3. уводим на HomePage
-      router.replace('/');
-    } catch (e) {
-      console.error('Logout error', e);
-      Alert.alert('Ошибка', 'Не удалось выйти из аккаунта.');
-    }
+    await clearAuth();
+    router.replace("/");
   };
 
   return (
     <View style={styles.container}>
-      <UIText weight={700} style={styles.title}>
+      <UIText weight={"bold"} style={styles.title}>
         Профиль
       </UIText>
 
@@ -80,6 +66,6 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   logoutWrapper: {
-    marginTop: 'auto', // кнопка уезжает вниз
+    marginTop: "auto",
   },
 });

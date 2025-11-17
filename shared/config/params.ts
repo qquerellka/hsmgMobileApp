@@ -3,6 +3,5 @@ export const params = {
         borderRadius: 10,
         paddingHorizontal: 10,
         paddingVertical: 8,
-        
     }
 }

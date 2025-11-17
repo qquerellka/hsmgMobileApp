@@ -1,4 +1,3 @@
-// widgets/header/Header.tsx
 import React from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
@@ -6,7 +5,7 @@ import { UIIcon } from "@/shared/ui/UIIcon";
 
 export const HEADER_BAR_HEIGHT = 70;
 
-type HeaderProps = {
+interface HeaderProps {
   isMenuOpen: boolean;
   onBurgerPress: () => void;
 };
@@ -21,10 +20,6 @@ export const Header: React.FC<HeaderProps> = ({ isMenuOpen, onBurgerPress }) => 
       />
 
       <View style={styles.actions}>
-        {/* <Pressable hitSlop={10} onPress={() => {}}>
-          <UIIcon name="profile" size={44} />
-        </Pressable> */}
-
         <Pressable hitSlop={10} onPress={onBurgerPress}>
           <UIIcon name={isMenuOpen ? "close" : "burger"} size={44} />
         </Pressable>

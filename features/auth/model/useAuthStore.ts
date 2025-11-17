@@ -1,13 +1,13 @@
 // features/auth/model/useAuthStore.ts
 import { create } from 'zustand';
 
-export type SocialMedia = {
+export interface SocialMedia {
   telegram_url: string | null;
   vk_url: string | null;
   youtube_url: string | null;
-};
+}
 
-export type AuthUser = {
+export interface AuthUser {
   user_id: number;
   email: string;
   name: string;
@@ -15,11 +15,11 @@ export type AuthUser = {
   nickname: string;
   avatar: string;
   social_media: SocialMedia;
-};
+}
 
 export type AuthStatus = 'idle' | 'checking' | 'authenticated' | 'unauthenticated';
 
-type AuthState = {
+interface AuthState {
   accessToken: string | null;
   user: AuthUser | null;
   status: AuthStatus;
@@ -27,7 +27,7 @@ type AuthState = {
   setUser: (user: AuthUser | null) => void;
   setStatus: (status: AuthStatus) => void;
   logout: () => void;
-};
+}
 
 export const useAuthStore = create<AuthState>((set) => ({
   accessToken: null,

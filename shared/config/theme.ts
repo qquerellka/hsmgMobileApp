@@ -1,5 +1,3 @@
-// constants/theme.ts (или shared/config/theme.ts — где он у тебя лежит)
-
 import type { ColorValue } from 'react-native';
 
 export const palette = {
@@ -19,7 +17,6 @@ export const palette = {
 
 export type Palette = typeof palette;
 
-// минимум два цвета — как у expo-linear-gradient
 export type GradientColors = [ColorValue, ColorValue, ...ColorValue[]];
 
 export type GradientDef = {
@@ -48,7 +45,16 @@ export const gradients = {
   },
 } satisfies Record<string, GradientDef>;
 
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  xxl: 32,
+};
+
 export type Gradients = typeof gradients;
 
-export const theme = { palette, gradients };
+export const theme = { palette, gradients, spacing };
 export type Theme = typeof theme;

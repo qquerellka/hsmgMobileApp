@@ -1,13 +1,12 @@
-// shared/ui/UIIcon.tsx
 import React from 'react';
 import { SvgProps } from 'react-native-svg';
 
 import ProfileIcon from '../../assets/icons/navProfileIcon.svg';
 import BurgerIcon from '../../assets/icons/navBurderIcon.svg';
-// сюда же импортируешь остальные svg по мере надобности
 import CloseIcon from '../../assets/icons/closeBurgerIcon.svg';
 import LinkIcon from '../../assets/icons/linkIcon.svg';
-import TgIcon from "../../assets/icons/tgIcon.svg"
+import TgIcon from "../../assets/icons/tgIcon.svg";
+
 import { theme } from '@shared/config/theme';
 
 const ICONS = {
@@ -38,7 +37,6 @@ export const UIIcon: React.FC<UIIconProps> = ({
     <IconComponent
       width={size}
       height={size}
-      // чаще всего svg реагируют на fill/stroke
       fill={color}
       color={color}
       {...rest}

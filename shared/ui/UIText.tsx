@@ -1,4 +1,3 @@
-// shared/ui/UIText.tsx
 import React from "react";
 import { Text, TextProps, StyleSheet } from "react-native";
 import { theme } from "@shared/config/theme";
@@ -16,7 +15,6 @@ export const UIText: React.FC<UITextProps> = ({
     <Text
       {...rest}
       style={[styles.base, getFontStyle(weight), style]}
-      // если хочешь, можно включить допуска пропов вроде numberOfLines и т.д.
     />
   );
 };

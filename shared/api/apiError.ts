@@ -1,7 +1,10 @@
-// shared/api/apiError.ts
 import type { AxiosError } from 'axios';
 
-export type ApiErrorResponse = any; // пока не выпендриваемся
+type ApiErrorResponse = {
+  message?: string;
+  detail?: string;
+  error?: string;
+} | string | null;
 
 export type ApiError = AxiosError<ApiErrorResponse>;
 
