@@ -1,78 +1,61 @@
-// ui/UIMainPageLink.tsx
-import { Link, type Href } from 'expo-router';
-import { ReactNode } from 'react';
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-  type StyleProp,
-  type ViewStyle,
-} from 'react-native';
-
-import { theme } from '@/shared/config/theme';
-import { UIText } from '@/shared/ui/UIText';
-
+// ui/UIMainLink.tsx
+import { ReactNode } from "react";
+import { Pressable, View, StyleSheet, PressableProps } from "react-native";
+import { Link, type Href } from "expo-router";
+import { UIText } from "./UIText";
+import { UIIcon } from "./UIIcon";
 type Props = {
   href: Href;
   children?: ReactNode;
   title?: string;
-  subtitle?: string;
-  // 👇 вместо PressableProps['style']
-  style?: StyleProp<ViewStyle>;
-};
+} & Omit<PressableProps, "onPress">;
 
 export const UIMainPageLink = ({
   href,
   children,
   title,
-  subtitle = 'Твое приложение для тренировок',
   style,
+  ...rest
 }: Props) => {
   return (
     <Link href={href} asChild>
       <Pressable
-        style={({ pressed }) => [
-          styles.container,
-          pressed && styles.pressed,
-          style,
-        ]}
+        accessibilityRole="button"
+        android_ripple={{ foreground: true }}
+        {...rest}
       >
-        <View style={{ flex: 1 }}>
-          {title && (
-            <UIText weight={600} style={styles.title}>
+        {children ?? (
+          <View style={styles.container}>
+            <UIText weight={'semibold'} style={styles.title}>
               {title}
             </UIText>
-          )}
-          {subtitle && <UIText style={styles.subtitle}>{subtitle}</UIText>}
-          {children}
-        </View>
 
-        <Image
-          source={require('../../assets/icons/navProfileIcon.png')}
-          style={{ width: 32, height: 32, tintColor: theme.palette.white }}
-          resizeMode="contain"
-        />
+            <UIIcon name={"link"} size={40} />
+          </View>
+        )}
       </Pressable>
     </Link>
   );
 };
 
 const styles = StyleSheet.create({
-  pressed: { opacity: 0.85 },
-  title: { fontSize: 18, color: theme.palette.white },
-  subtitle: {
-    marginTop: 4,
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.7)',
+  base: {
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 16,
+    backgroundColor: "#111827",
   },
+  pressed: { opacity: 0.85 },
+  title: { fontSize: 18, color: "#fff" },
+  subtitle: { marginTop: 4, fontSize: 14, color: "rgba(255,255,255,0.7)" },
   container: {
     marginTop: 80,
-    backgroundColor: theme.palette.totalBlack,
+    backgroundColor: "#000",
     paddingHorizontal: 50,
     paddingVertical: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     gap: 20,
     borderRadius: 50,
   },

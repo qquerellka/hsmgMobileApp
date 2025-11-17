@@ -1,19 +1,43 @@
-// components/UiText.tsx
-import { Text, TextProps } from "react-native";
-
-type FontWeight = 400 | 500 | 600 | 700;
+// shared/ui/UIText.tsx
+import React from "react";
+import { Text, TextProps, StyleSheet } from "react-native";
+import { theme } from "@shared/config/theme";
 
 type UITextProps = TextProps & {
-  weight?: FontWeight;
+  weight?: "regular" | "medium" | "semibold" | "bold";
 };
 
-const fontMap: Record<FontWeight, string> = {
-  400: "Montserrat_400Regular",
-  500: "Montserrat_500Medium",
-  600: "Montserrat_600SemiBold",
-  700: "Montserrat_700Bold",
+export const UIText: React.FC<UITextProps> = ({
+  style,
+  weight = "regular",
+  ...rest
+}) => {
+  return (
+    <Text
+      {...rest}
+      style={[styles.base, getFontStyle(weight), style]}
+      // если хочешь, можно включить допуска пропов вроде numberOfLines и т.д.
+    />
+  );
 };
 
-export const UIText = ({ style, weight = 500, ...rest }: UITextProps) => (
-  <Text {...rest} style={[{ fontFamily: fontMap[weight] }, style]} />
-);
+const styles = StyleSheet.create({
+  base: {
+    color: theme.palette.white,
+    fontSize: 16,
+  },
+});
+
+const getFontStyle = (weight: UITextProps["weight"]) => {
+  switch (weight) {
+    case "medium":
+      return { fontFamily: "Montserrat-Medium" };
+    case "semibold":
+      return { fontFamily: "Montserrat-SemiBold" };
+    case "bold":
+      return { fontFamily: "Montserrat-Bold" };
+    case "regular":
+    default:
+      return { fontFamily: "Montserrat-Regular" };
+  }
+};

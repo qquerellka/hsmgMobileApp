@@ -1,7 +1,5 @@
-// ui/BackgroundShapes.tsx
 import React from "react";
-import { StyleSheet, useWindowDimensions } from "react-native";
-import Svg, { G } from "react-native-svg";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
 
 import Up from "@/assets/backgroundSvg/up.svg";
 import Cup from "@/assets/backgroundSvg/cup.svg";
@@ -10,47 +8,104 @@ import Lightning from "@/assets/backgroundSvg/lightning.svg";
 import Metal from "@/assets/backgroundSvg/metal.svg";
 import Man from "@/assets/backgroundSvg/man.svg";
 
+const BG_ICON_OPACITY = 0.75;
+
 export const BackgroundShapes = () => {
   const { width, height } = useWindowDimensions();
-  const vbW = Math.round(width);
-  const vbH = Math.round(height);
 
   return (
-    <Svg
-      pointerEvents="none"
-      style={StyleSheet.absoluteFillObject}
-      viewBox={`0 0 ${vbW} ${vbH}`}
-      preserveAspectRatio="none"
-    >
-      {/* 1 */}
-      <G transform="translate(64, 24)">
-        <G opacity={0.12} transform="scale(1.18)"><Man width={88} height={88} /></G>
-      </G>
+    <View pointerEvents="none" style={StyleSheet.absoluteFillObject}>
+      {/* 1 — Man */}
+      <Man
+        width={88}
+        height={88}
+        style={[
+          styles.icon,
+          {
+            top: 24,
+            left: 32,
+            opacity: BG_ICON_OPACITY,
+          },
+        ]}
+      />
 
-      {/* 2 */}
-      <G transform={`translate(${vbW - 96}, 160)`}>
-        <G opacity={0.10} transform="scale(1.18)"><Metal width={80} height={80} /></G>
-      </G>
+      {/* 2 — Metal */}
+      <Metal
+        width={80}
+        height={80}
+        style={[
+          styles.icon,
+          {
+            top: 160,
+            left: width - 96,
+            opacity: BG_ICON_OPACITY,
+          },
+        ]}
+      />
 
-      {/* 3 */}
-      <G transform={`translate(24,${Math.round(vbH * 0.45)}) `}>
-        <G opacity={0.10} transform="scale(1.18)"><Muscle width={196} height={196} /></G>
-      </G>
+      {/* 3 — Muscle */}
+      <Muscle
+        width={196}
+        height={196}
+        style={[
+          styles.icon,
+          {
+            top: Math.round(height * 0.45),
+            left: 24,
+            opacity: BG_ICON_OPACITY,
+          },
+        ]}
+      />
 
-      {/* 4 */}
-      <G transform={`translate(${vbW - 144},${Math.round(vbH * 0.4)}) rotate(-12)`}>
-        <G opacity={0.10} transform="scale(1.2)"><Lightning width={117} height={117} /></G>
-      </G>
+      {/* 4 — Lightning */}
+      <Lightning
+        width={117}
+        height={117}
+        style={[
+          styles.icon,
+          {
+            top: Math.round(height * 0.4),
+            left: width - 144,
+            opacity: BG_ICON_OPACITY,
+            transform: [{ rotate: "-12deg" }],
+          },
+        ]}
+      />
 
-      {/* 5 */}
-      <G transform={`translate(40,${vbH - 180}) rotate(8)`}>
-        <G opacity={0.10} transform="scale(1.18)"><Cup width={90} height={90} /></G>
-      </G>
+      {/* 5 — Cup */}
+      <Cup
+        width={90}
+        height={90}
+        style={[
+          styles.icon,
+          {
+            top: height - 180,
+            left: 40,
+            opacity: BG_ICON_OPACITY,
+            transform: [{ rotate: "8deg" }],
+          },
+        ]}
+      />
 
-      {/* 6 */}
-      <G transform={`translate(${vbW - 200},${vbH - 200})`}>
-        <G opacity={0.10} transform="scale(1.18)"><Up width={155} height={155} /></G>
-      </G>
-    </Svg>
+      {/* 6 — Up */}
+      <Up
+        width={155}
+        height={155}
+        style={[
+          styles.icon,
+          {
+            top: height - 250,
+            left: width - 200,
+            opacity: BG_ICON_OPACITY,
+          },
+        ]}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  icon: {
+    position: "absolute",
+  },
+});
