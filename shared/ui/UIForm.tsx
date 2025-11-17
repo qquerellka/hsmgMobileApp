@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, ViewStyle } from "react-native";
+import { View, StyleSheet, ViewStyle, StyleProp } from "react-native";
 
 import { UIText } from "@shared/ui/UIText";
 import { theme } from "@shared/config/theme";
@@ -9,7 +9,7 @@ type UIFormProps = {
   subtitle?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const UIForm: React.FC<UIFormProps> = ({

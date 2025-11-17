@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Pressable,
   PressableProps,
+  StyleProp,
   StyleSheet,
   View,
   ViewStyle,
@@ -27,7 +28,7 @@ type UIButtonProps = Omit<PressableProps, "style"> & {
   size?: UIButtonSize;
   fullWidth?: boolean;
   loading?: boolean;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const UIButton: React.FC<UIButtonProps> = ({
@@ -164,8 +165,8 @@ const getVariantStyle = (variant: UIButtonVariant): ViewStyle => {
   }
 };
 
-const getSizeStyle = (size: UIButtonSize): ViewStyle => {
-  switch (size) {
+const getSizeStyle = (ViewStylesize: UIButtonSize): ViewStyle => {
+  switch (ViewStylesize) {
     case "sm":
       return styles.sm;
     case "md":
