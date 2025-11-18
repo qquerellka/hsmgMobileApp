@@ -1,27 +1,18 @@
-// ui/UIMainLink.tsx
 import { ReactNode } from "react";
-import {
-  Pressable,
-  Image,
-  View,
-  StyleSheet,
-  PressableProps,
-} from "react-native";
+import { Pressable, View, StyleSheet, PressableProps } from "react-native";
 import { Link, type Href } from "expo-router";
-import { UIText } from "@/ui/UIText";
-
+import { UIText } from "./UIText";
+import { UIIcon } from "./UIIcon";
 type Props = {
-  href: Href; // куда навигировать
-  children?: ReactNode; // свой контент (кастомный)
-  title?: string; // быстрый вариант — просто заголовок
-  subtitle?: string; // подпись помельче
+  href: Href;
+  children?: ReactNode;
+  title?: string;
 } & Omit<PressableProps, "onPress">;
 
 export const UIMainPageLink = ({
   href,
   children,
   title,
-  subtitle,
   style,
   ...rest
 }: Props) => {
@@ -29,27 +20,16 @@ export const UIMainPageLink = ({
     <Link href={href} asChild>
       <Pressable
         accessibilityRole="button"
-        style={({ pressed }) => [styles.base, pressed && styles.pressed, style]}
         android_ripple={{ foreground: true }}
         {...rest}
       >
         {children ?? (
           <View style={styles.container}>
-            {title && (
-              <UIText weight={600} style={styles.title}>
-                {title}
-              </UIText>
-            )}
-            {!!subtitle && (
-              <UIText weight={400} style={styles.subtitle}>
-                {subtitle}
-              </UIText>
-            )}
-            <Image
-              source={require("../assets/linkIcon.png")}
-              resizeMode="contain"
-              style={{ width: 40, height: 40 }}
-            />
+            <UIText weight={'semibold'} style={styles.title}>
+              {title}
+            </UIText>
+
+            <UIIcon name={"link"} size={40} />
           </View>
         )}
       </Pressable>
@@ -75,7 +55,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 20, 
+    gap: 20,
     borderRadius: 50,
   },
 });

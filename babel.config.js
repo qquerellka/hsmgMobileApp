@@ -1,11 +1,25 @@
 // babel.config.js
 module.exports = function (api) {
-  api.cache(true)
+  api.cache(true);
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      // другие плагины (если есть)
-      'react-native-reanimated/plugin',   // ВАЖНО: последним!
+      [
+        'module-resolver',
+        {
+          root: ['./'],
+          alias: {
+            '@': './',
+            '@app': './app',
+            '@pages': './pages',
+            '@widgets': './widgets',
+            '@features': './features',
+            '@entities': './entities',
+            '@shared': './shared',
+          },
+        },
+      ],
+      'react-native-reanimated/plugin', // ВАЖНО: последним
     ],
-  }
-}
+  };
+};
