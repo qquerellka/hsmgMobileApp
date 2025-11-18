@@ -24,7 +24,6 @@ export const LoginPage = () => {
 
     try {
       await mutateAsync({ email, password });
-      router.replace("/profile");
     } catch (e) {
       const err = e as ApiError;
       const message = getApiErrorMessage(err);
