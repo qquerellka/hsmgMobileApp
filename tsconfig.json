@@ -10,7 +10,7 @@
       "@features/*": ["./features/*"],
       "@entities/*": ["./entities/*"],
       "@shared/*": ["./shared/*"],
-      "@assets/*": ["./assets/*"],
+      "@assets/*": ["./assets/*"]
     }
   },
   "include": [
@@ -19,6 +19,11 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     ".expo/types/**/*.ts",
-    "./app", "./features", "./shared", "./pages", "./shared/types"
+    "types/**/*.d.ts",
+    "./app",
+    "./features",
+    "./shared",
+    "./pages",
+    "./shared/types"
   ]
 }
